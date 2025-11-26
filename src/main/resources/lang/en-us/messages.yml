@@ -1,0 +1,60 @@
+# English messages for EthriaPlotCount
+messages:
+  prefix: "&8[&6PlotCount&8]&7 » "
+
+  # General messages
+  plugin_enabled: "Plugin has been successfully enabled!"
+  plugin_disabled: "Plugin has been disabled."
+  plotsquared_not_found: "PlotSquared not found! Plugin will be disabled."
+  plotsquared_found: "PlotSquared detected. Plugin ready."
+  config_reloaded: "Configuration has been reloaded."
+
+  # Command messages
+  usage: "Usage: /{command} <entity-type>"
+  player_only: "This command can only be used by players!"
+  not_on_plot: "You are not standing on a plot!"
+
+  # Aliases
+  aliases_registered: "{count} command aliases registered: {aliases}"
+  available_aliases: "Available aliases: {aliases}"
+  no_permission: "You don't have permission to use this command!"
+  no_entity_permission: "You don't have permission to count {entityType}!"
+  no_plot_permission: "You don't have permission to count on this plot!"
+  plot_access_denied: "You can only count on your own/trusted/added plots!"
+  need_owner_online: "The plot owner must be online for you to count here!"
+
+
+  # Entity counting
+  counting_entities: "Counting {entityType} on this plot..."
+  counting_entities_large: "Counting {entityType} on {plotCount} plots... This may take a moment."
+  counting_all_entities: "&eCounting ALL entities on this plot..."
+  count_result: "&aResult: &e{count} &a{entityName} found on this plot."
+  count_result_merged: "&aResult: &e{count} &a{entityName} found on this plot with {plotCount} merges."
+  count_result_detailed: "&aResult: &e{count} &a{entityName} found &7(Visible: {visible}, Invisible: {invisible}, Fixed: {fixed})"
+  count_limit_reached: "&cToo many entities! Limit reached: {limit} &7(possibly more exist)"
+  entity_not_allowed: "&cThis entity type is not allowed: &e{entityType}"
+  invalid_entity_type: "&cUnknown entity type: &e{entityType}"
+
+  # Admin counting (plotcount all/*)
+  counting_all_header: "&e=== Counting ALL entities on this plot ==="
+  counting_all_header_merged: "&e=== Counting ALL entities on this {plotCount}-plot merge ==="
+  counting_all_total: "&a=== Total: &e{total} &aEntities ==="
+  counting_all_no_entities: "&cNo entities found on this plot."
+
+  # Plot-specific messages
+  plot_access_checking: "Checking plot access..."
+  plot_found: "&7Plot found: &e{plotId} &7in world &e{world}"
+  merged_plots_info: "&7Including {count} merged plot(s)"
+
+  # Errors
+  error_occurred: "&cAn error occurred: {error}"
+
+  # Help
+  help_header: "&6=== PlotCount Help ==="
+  help_count: "&e/plotcount <type> &7- Count entities on current plot"
+  help_admin_all: "&e/plotcount all &7- Count all entity types (Admin)"
+  help_admin_star: "&e/plotcount * &7- Count all entity types (Admin)"
+  help_reload: "&e/plotcount reload &7- Reload configuration (Admin)"
+  help_footer: "&7Available entity types: &e{types}"
+  help_tab_completion: "&7Tip: Use Tab-Completion for entity names!"
+

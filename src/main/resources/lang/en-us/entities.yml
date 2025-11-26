@@ -1,0 +1,119 @@
+# English Entity Names
+# Format: minecraft_entity_name: "English Name"
+
+# === ANIMALS ===
+animals:
+  cow: "Cow"
+  sheep: "Sheep"
+  pig: "Pig"
+  chicken: "Chicken"
+  horse: "Horse"
+  donkey: "Donkey"
+  mule: "Mule"
+  llama: "Llama"
+  trader_llama: "Trader Llama"
+  wolf: "Wolf"
+  cat: "Cat"
+  ocelot: "Ocelot"
+  rabbit: "Rabbit"
+  fox: "Fox"
+  bee: "Bee"
+  turtle: "Turtle"
+  panda: "Panda"
+  polar_bear: "Polar Bear"
+  goat: "Goat"
+  axolotl: "Axolotl"
+  frog: "Frog"
+  tadpole: "Tadpole"
+  camel: "Camel"
+  sniffer: "Sniffer"
+  armadillo: "Armadillo"
+
+  # Villagers & Golems
+  villager: "Villager"
+  iron_golem: "Iron Golem"
+  snow_golem: "Snow Golem"
+
+# === MOBS ===
+mobs:
+  zombie: "Zombie"
+  skeleton: "Skeleton"
+  creeper: "Creeper"
+  spider: "Spider"
+  cave_spider: "Cave Spider"
+  enderman: "Enderman"
+  witch: "Witch"
+  slime: "Slime"
+  magma_cube: "Magma Cube"
+  blaze: "Blaze"
+  ghast: "Ghast"
+  phantom: "Phantom"
+  drowned: "Drowned"
+  husk: "Husk"
+  stray: "Stray"
+  wither_skeleton: "Wither Skeleton"
+  zombified_piglin: "Zombified Piglin"
+  piglin: "Piglin"
+  piglin_brute: "Piglin Brute"
+  hoglin: "Hoglin"
+  zoglin: "Zoglin"
+  endermite: "Endermite"
+  silverfish: "Silverfish"
+  guardian: "Guardian"
+  elder_guardian: "Elder Guardian"
+  shulker: "Shulker"
+  vex: "Vex"
+  evoker: "Evoker"
+  vindicator: "Vindicator"
+  pillager: "Pillager"
+  ravager: "Ravager"
+  wither: "Wither"
+  ender_dragon: "Ender Dragon"
+  warden: "Warden"
+
+# === ENTITIES ===
+entities:
+  armor_stand: "Armor Stand"
+  item_frame: "Item Frame"
+  glow_item_frame: "Glow Item Frame"
+  painting: "Painting"
+
+# === VEHICLES ===
+vehicles:
+  minecart: "Minecart"
+  chest_minecart: "Chest Minecart"
+  hopper_minecart: "Hopper Minecart"
+  tnt_minecart: "TNT Minecart"
+  furnace_minecart: "Furnace Minecart"
+  boat: "Boat"
+  chest_boat: "Chest Boat"
+
+# === ITEMS ===
+items:
+  item: "Item"
+  experience_orb: "Experience Orb"
+
+# === PROJECTILES ===
+projectiles:
+  arrow: "Arrow"
+  spectral_arrow: "Spectral Arrow"
+  trident: "Trident"
+  snowball: "Snowball"
+  egg: "Egg"
+  ender_pearl: "Ender Pearl"
+  potion: "Potion"
+  firework_rocket: "Firework Rocket"
+  fireball: "Fireball"
+  small_fireball: "Small Fireball"
+  dragon_fireball: "Dragon Fireball"
+  wither_skull: "Wither Skull"
+
+# === GROUP NAMES ===
+groups:
+  all: "All"
+  animals: "Animals"
+  mobs: "Mobs"
+  entities: "Entities"
+  items: "Items"
+  vehicles: "Vehicles"
+  projectiles: "Projectiles"

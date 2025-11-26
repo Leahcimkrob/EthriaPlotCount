@@ -1,0 +1,61 @@
+# Deutsche Nachrichten für EthriaPlotCount
+messages:
+  prefix: "&8[&6EthriaCount&8]&7 » "
+
+  # Allgemeine Nachrichten
+  plugin_enabled: "Plugin wurde erfolgreich aktiviert!"
+  plugin_disabled: "Plugin wurde deaktiviert."
+  plotsquared_not_found: "PlotSquared wurde nicht gefunden! Plugin wird deaktiviert."
+  plotsquared_found: "PlotSquared erkannt. Plugin bereit."
+  config_reloaded: "Konfiguration wurde neu geladen."
+
+  # Command Nachrichten
+  usage: "Verwendung: /{command} <entity-typ>"
+  player_only: "Dieser Befehl kann nur von Spielern verwendet werden!"
+  not_on_plot: "Du befindest dich nicht auf einem Plot!"
+
+  # Aliases
+  aliases_registered: "{count} Command-Aliases registriert: {aliases}"
+  available_aliases: "Verfügbare Aliases: {aliases}"
+  # Berechtigungen und Zugriff
+  no_permission: "Du hast keine Berechtigung für diesen Befehl!"
+  no_entity_permission: "Du hast keine Berechtigung, {entityType} zu zählen!"
+  no_plot_permission: "Du hast keine Berechtigung, auf diesem Plot zu zählen!"
+  plot_access_denied: "Du kannst nur auf deinen eigenen/getrusted/added Plots zählen!"
+  need_owner_online: "Der Plot-Besitzer muss online sein, damit du hier zählen kannst!"
+
+
+  # Entity-Zählung
+  counting_entities: "Zähle {entityType} auf diesem Plot..."
+  counting_entities_large: "Zähle {entityType} auf {plotCount} Plots... Dies kann einen Moment dauern."
+  count_result: "&aErgebnis: &e{count} &a{entityName} auf diesem Plot gefunden."
+  count_result_merged: "&aErgebnis: &e{count} &a{entityName} auf diesem {plotCount}er Merge gefunden."
+  count_result_detailed: "&aErgebnis: &e{count} &a{entityName} gefunden &7(Sichtbar: {visible}, Unsichtbar: {invisible}, Fixiert: {fixed})"
+  count_limit_reached: "&cZu viele Entities! PlotCount-Limit erreicht: {limit} &7(möglicherweise mehr vorhanden)"
+  entity_not_allowed: "&cDieser Entity-Typ ist nicht erlaubt: &e{entityType}"
+  invalid_entity_type: "&cUnbekannter Entity-Typ: &e{entityType}"
+
+  # Admin-Zählung (plotcount all/*)
+  counting_all_header: "&e=== Entities auf diesem Plot ==="
+  counting_all_header_merged: "&e=== Entities auf diesem {plotCount}er Merge ==="
+  counting_all_total: "&a=== Gesamt: &e{total} &aEntities ==="
+  counting_all_no_entities: "&cKeine Entities auf diesem Plot gefunden."
+
+  # Plot-spezifische Nachrichten
+  plot_access_checking: "Prüfe Plot-Zugriff..."
+  plot_found: "&7Plot gefunden: &e{plotId} &7in Welt &e{world}"
+  merged_plots_info: "&7Inklusive {count} gemergete(r) Plot(s)"
+  counting_progress: "&7Durchsuche Chunks... {current}/{total}"
+
+  # Fehler
+  error_occurred: "&cEin Fehler ist aufgetreten: {error}"
+
+  # Help
+  help_header: "&6=== PlotCount Hilfe ==="
+  help_count: "&e/plotcount <typ> &7- Zählt Entities auf dem aktuellen Plot"
+  help_admin_all: "&e/plotcount all &7- Zählt alle Entity-Typen (Admin)"
+  help_admin_star: "&e/plotcount * &7- Zählt alle Entity-Typen (Admin)"
+  help_reload: "&e/plotcount reload &7- Lädt die Konfiguration neu (Admin)"
+  help_footer: "&7Verfügbare Entity-Typen: &e{types}"
+  help_tab_completion: "&7Tipp: Nutze Tab-Completion für Entity-Namen!"
+

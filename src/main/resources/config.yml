@@ -1,0 +1,34 @@
+# EthriaPlotCount Configuration
+# Plugin zum Zählen von Entities auf Plots
+
+# Sprache für Nachrichten (de-de, en-us)
+language: "de-de"
+
+# Command-Aliases (zusätzlich zu /plotcount)
+command_aliases:
+  - "count"
+  - "entitycount"
+
+# Erweiterte Einstellungen
+settings:
+  # Sollen unsichtbare Entities (z.B. unsichtbare Rüstungsständer) gezählt werden?
+  count_invisible: true
+
+  # Sollen fixierte Entities (z.B. fixierte Itemframes) gezählt werden?
+  count_fixed: true
+
+  # Sollen auch gemergete Plots berücksichtigt werden?
+  include_merged_plots: true
+
+  # Maximale Anzahl Entities die auf einmal gezählt werden (Performance)
+  max_count_limit: 1000
+
+  # Sollen auch Items auf dem Boden gezählt werden?
+  count_dropped_items: false
+
+  # Debug-Modus für detaillierte Plot-Grenz-Informationen
+  debug_boundaries: false
+
+  # Debug-Modus für allgemeine Plugin-Informationen
+  debug_enabled: false
+

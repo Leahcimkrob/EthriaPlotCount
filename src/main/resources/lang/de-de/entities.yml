@@ -1,0 +1,120 @@
+# Deutsche Entity-Namen Übersetzungen
+# Format: minecraft_entity_name: "Deutscher Name"
+
+# === TIERE (Animals) ===
+animals:
+  cow: "Kuh"
+  sheep: "Schaf"
+  pig: "Schwein"
+  chicken: "Huhn"
+  horse: "Pferd"
+  donkey: "Esel"
+  mule: "Maultier"
+  llama: "Lama"
+  trader_llama: "Händler-Lama"
+  wolf: "Wolf"
+  cat: "Katze"
+  ocelot: "Ozelot"
+  rabbit: "Kaninchen"
+  fox: "Fuchs"
+  bee: "Biene"
+  turtle: "Schildkröte"
+  panda: "Panda"
+  polar_bear: "Eisbär"
+  goat: "Ziege"
+  axolotl: "Axolotl"
+  frog: "Frosch"
+  tadpole: "Kaulquappe"
+  camel: "Kamel"
+  sniffer: "Schnüffler"
+  armadillo: "Gürteltier"
+
+  # Dorfbewohner & Golems
+  villager: "Dorfbewohner"
+  iron_golem: "Eisengolem"
+  snow_golem: "Schneegolem"
+
+# === MONSTER (Mobs) ===
+mobs:
+  zombie: "Zombie"
+  skeleton: "Skelett"
+  creeper: "Creeper"
+  spider: "Spinne"
+  cave_spider: "Höhlenspinne"
+  enderman: "Enderman"
+  witch: "Hexe"
+  slime: "Schleim"
+  magma_cube: "Magmawürfel"
+  blaze: "Lohe"
+  ghast: "Ghast"
+  phantom: "Phantom"
+  drowned: "Ertrunkener"
+  husk: "Wüstenzombie"
+  stray: "Eiswanderer"
+  wither_skeleton: "Witherskelett"
+  zombified_piglin: "Zombifizierter Piglin"
+  piglin: "Piglin"
+  piglin_brute: "Piglin-Barbar"
+  hoglin: "Hoglin"
+  zoglin: "Zoglin"
+  endermite: "Endermite"
+  silverfish: "Silberfischchen"
+  guardian: "Wächter"
+  elder_guardian: "Großer Wächter"
+  shulker: "Shulker"
+  vex: "Plagegeist"
+  evoker: "Magier"
+  vindicator: "Diener"
+  pillager: "Plünderer"
+  ravager: "Verwüster"
+  wither: "Wither"
+  ender_dragon: "Enderdrache"
+  warden: "Wärter"
+  bat: "Fledermaus"
+
+# === ENTITIES (Objekte) ===
+entities:
+  armor_stand: "Rüstungsständer"
+  item_frame: "Rahmen"
+  glow_item_frame: "Leuchtrahmen"
+  painting: "Gemälde"
+
+# === FAHRZEUGE (Vehicles) ===
+vehicles:
+  minecart: "Lore"
+  chest_minecart: "Güterlore"
+  hopper_minecart: "Trichterlore"
+  tnt_minecart: "TNT-Lore"
+  furnace_minecart: "Antriebslore"
+  boat: "Boot"
+  chest_boat: "Boot mit Truhe"
+
+# === GEGENSTÄNDE (Items) ===
+items:
+  item: "Gegenstand"
+  experience_orb: "Erfahrungskugel"
+
+# === PROJEKTILE (Projectiles) ===
+projectiles:
+  arrow: "Pfeil"
+  spectral_arrow: "Spektralpfeil"
+  trident: "Dreizack"
+  snowball: "Schneeball"
+  egg: "Ei"
+  ender_pearl: "Enderperle"
+  potion: "Trank"
+  firework_rocket: "Feuerwerk"
+  fireball: "Feuerball"
+  small_fireball: "Kleiner Feuerball"
+  dragon_fireball: "Drachenfeuerball"
+  wither_skull: "Witherschädel"
+
+# === GRUPPEN-NAMEN ===
+groups:
+  all: "Alle"
+  animals: "Tiere"
+  mobs: "Monster"
+  entities: "Entities"
+  items: "Gegenstände"
+  vehicles: "Fahrzeuge"
+  projectiles: "Projektile"

@@ -1,0 +1,101 @@
+name: EthriaPlotCount
+version: ${project.version}
+main: de.leahcimkrob.ethriaPlotCount.EthriaPlotCount
+api-version: '1.21'
+description: Plugin zum Zählen von Entities auf Plots
+author: leahcimkrob
+website: https://github.com/leahcimkrob/EthriaPlotCount
+
+commands:
+  plotcount:
+    description: Zählt Entities auf einem Plot
+    usage: /plotcount <entitytype|all|help|reload>
+    permission: ethriaplotcount.use
+
+depend:
+  - PlotSquared
+
+permissions:
+  # === ADMIN BERECHTIGUNGEN ===
+  ethriaplotcount.admin:
+    description: Vollzugriff - darf alles auf jedem Plot zählen
+    default: op
+    children:
+      ethriaplotcount.use: true
+      ethriaplotcount.group.*: true
+      ethriaplotcount.entity.*: true
+      ethriaplotcount.own: true
+      ethriaplotcount.other: true
+      ethriaplotcount.reload: true
+
+  # === BASIS BERECHTIGUNGEN ===
+  ethriaplotcount.use:
+    description: Basis-Berechtigung um das Plugin zu verwenden
+    default: true
+
+  ethriaplotcount.reload:
+    description: Darf die Plugin-Konfiguration neu laden
+    default: op
+
+  # === PLOT-ZUGRIFF ===
+  ethriaplotcount.own:
+    description: Darf auf eigenen, getrusted oder added Plots zählen (nur wenn Owner online)
+    default: true
+
+  ethriaplotcount.other:
+    description: Darf auch auf fremden Plots zählen
+    default: op
+
+  # === GRUPPEN-BERECHTIGUNGEN ===
+  ethriaplotcount.group.*:
+    description: Darf alle Entity-Gruppen zählen
+    default: op
+    children:
+      ethriaplotcount.group.animals: true
+      ethriaplotcount.group.mobs: true
+      ethriaplotcount.group.entities: true
+      ethriaplotcount.group.vehicles: true
+      ethriaplotcount.group.items: true
+      ethriaplotcount.group.projectiles: true
+
+  ethriaplotcount.group.animals:
+    description: Darf Tiere zählen (Kuh, Schaf, etc.)
+    default: true
+
+  ethriaplotcount.group.mobs:
+    description: Darf Monster zählen (Zombie, Skelett, etc.)
+    default: false
+
+  ethriaplotcount.group.entities:
+    description: Darf Entities zählen (Rüstungsständer, Itemframes, etc.)
+    default: false
+
+  ethriaplotcount.group.vehicles:
+    description: Darf Fahrzeuge zählen (Loren, Boote, etc.)
+    default: false
+
+  ethriaplotcount.group.items:
+    description: Darf Items zählen (Gegenstände, Erfahrungskugeln)
+    default: false
+
+  ethriaplotcount.group.projectiles:
+    description: Darf Projektile zählen (Pfeile, Feuerbälle, etc.)
+    default: false
+
+  # === EINZELNE ENTITIES ===
+  ethriaplotcount.entity.*:
+    description: Darf alle Entities zählen
+    default: op
+
+  # Beispiele für spezifische Entity-Berechtigungen:
+  ethriaplotcount.entity.sheep:
+    description: Darf Schafe zählen
+    default: true
+
+  ethriaplotcount.entity.cow:
+    description: Darf Kühe zählen
+    default: true
+
+  ethriaplotcount.entity.armor_stand:
+    description: Darf Rüstungsständer zählen
+    default: false
