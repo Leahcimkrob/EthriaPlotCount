@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.leahcimkrob</groupId>
-    <artifactId>ethriaplotcount</artifactId>
-    <version>1.0</version>
+    <artifactId>EthriaPlotCount</artifactId>
+    <version>1.1</version>
     <packaging>jar</packaging>
 
-    <name>ethriaplotcount</name>
+    <name>EthriaPlotCount</name>
+    <description>A Minecraft plugin for counting entities on PlotSquared plots</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

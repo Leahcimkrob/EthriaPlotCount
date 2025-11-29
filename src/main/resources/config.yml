@@ -26,9 +26,10 @@ settings:
   # Sollen auch Items auf dem Boden gezählt werden?
   count_dropped_items: false
 
+  # Debug-Modus aktivieren (schreibt detaillierte Informationen in debug.log)
+  debug_enabled: true
+
   # Debug-Modus für detaillierte Plot-Grenz-Informationen
   debug_boundaries: false
 
-  # Debug-Modus für allgemeine Plugin-Informationen
-  debug_enabled: false
 

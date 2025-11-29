@@ -1,5 +1,6 @@
 package de.leahcimkrob.ethriaPlotCount;
 
+import com.plotsquared.core.plot.Plot;
 import de.leahcimkrob.ethriaPlotCount.config.ConfigManager;
 import de.leahcimkrob.ethriaPlotCount.integration.PlotSquaredIntegration;
 import de.leahcimkrob.ethriaPlotCount.lang.MessageManager;
@@ -39,10 +40,14 @@ public class EthriaPlotCount extends JavaPlugin {
         // Initialisiere Debug Logger
         debugLogger = new DebugLogger(this);
 
+        // Aktiviere Debug-Modus basierend auf Config
+        debugLogger.setEnabled(configManager.isDebugEnabled());
+
         // Lösche alte debug.log bei Plugin-Start
         if (configManager.isDebugEnabled()) {
             debugLogger.clearLog();
             debugLogger.debug("=== EthriaPlotCount Debug-Session gestartet ===");
+            debugLogger.debug("Debug-Modus aktiviert, alle Debug-Meldungen werden in debug.log geschrieben");
         }
 
         // Check if PlotSquared is available
@@ -183,13 +188,18 @@ public class EthriaPlotCount extends JavaPlugin {
         }
 
         // Hole alle Plots die gezählt werden sollen
-        Set<com.plotsquared.core.plot.Plot> plotsToCount = PlotSquaredIntegration.getPlotsToCount(
+        Set<Plot> plotsToCount = PlotSquaredIntegration.getPlotsToCount(
             plot, configManager.shouldIncludeMergedPlots()
         );
 
-        // Debug: Zeige Merged-Plot Info
-        if (configManager.shouldIncludeMergedPlots() && plotsToCount.size() > 1) {
-            if (configManager.isDebugEnabled()) {
+        // Debug: Merge-Informationen loggen (nur einmal am Anfang)
+        if (configManager.isDebugEnabled()) {
+            debugLogger.debug("Spieler %s verwendet Befehl '/plotcount %s' auf Plot %s",
+                    player.getName(), entityTypeStr, plot.getId().toString());
+            PlotSquaredIntegration.debugMergeInfo(plotsToCount, debugLogger);
+
+            // Debug: Zeige Merged-Plot Info
+            if (configManager.shouldIncludeMergedPlots() && plotsToCount.size() > 1) {
                 debugLogger.debug("Inklusive %d gemergete(r) Plot(s)", plotsToCount.size() - 1);
             }
         }

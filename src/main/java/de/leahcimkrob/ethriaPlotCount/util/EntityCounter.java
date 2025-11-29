@@ -158,8 +158,7 @@ public class EntityCounter {
 
     /**
      * Erstellt eine detaillierte Zähl-Statistik
-     * Verwendet chunk-basierte Zählung für bessere Performance
-     * Mit verbesserter Grenzbehandlung für Plot-Ränder
+     * Verwendet optimierte Merge-Area-Berechnung für bessere Abdeckung der Straßen
      */
     public static CountResult countWithDetails(
             Set<com.plotsquared.core.plot.Plot> plots,
@@ -167,136 +166,185 @@ public class EntityCounter {
             ConfigManager config,
             DebugLogger debugLogger) {
 
+        if (plots.isEmpty()) {
+            return new CountResult(0, 0, 0, 0, 0, false, 0);
+        }
+
+        // Neue Logik: Bei mehreren Plots verwende eine einzige Merge-Area
+        if (plots.size() > 1) {
+            // Für Merge: Verwende eine große Bounding Box die alle Plots und Straßen umfasst
+            PlotSquaredIntegration.PlotBounds mergeBounds = PlotSquaredIntegration.getTotalMergeBounds(plots);
+
+            if (mergeBounds == null) {
+                return new CountResult(0, 0, 0, 0, 0, false, 0);
+            }
+
+            // Debug: Merge-Area Information nur einmal ausgeben
+            if (config.isDebugEnabled() && debugLogger != null) {
+                debugLogger.debug("=== MERGE AREA COUNTING ===");
+                debugLogger.debug("Merge-Bereich: %s", mergeBounds.toString());
+                debugLogger.debug("Anzahl Plots im Merge: %d", plots.size());
+            }
+
+            // Zähle in der gesamten Merge-Area
+            CountResult mergeResult = countInArea(mergeBounds, entityType, config, debugLogger);
+
+            if (config.isDebugEnabled() && debugLogger != null) {
+                debugLogger.debug("=== MERGE COUNTING ABGESCHLOSSEN ===");
+                debugLogger.debug("Gesamtergebnis: %d Entities gefunden", mergeResult.getTotalCount());
+            }
+
+            return new CountResult(
+                mergeResult.getTotalCount(),
+                mergeResult.getAllFoundCount(),
+                mergeResult.getVisibleCount(),
+                mergeResult.getInvisibleCount(),
+                mergeResult.getFixedCount(),
+                mergeResult.isLimitReached(),
+                plots.size()
+            );
+
+        } else {
+            // Für einzelne Plots: Verwende die alte Methode
+            com.plotsquared.core.plot.Plot singlePlot = plots.iterator().next();
+            PlotSquaredIntegration.PlotBounds bounds = PlotSquaredIntegration.getPlotBounds(singlePlot);
+
+            // Debug: Einzelplot-Information nur einmal ausgeben
+            if (config.isDebugEnabled() && debugLogger != null) {
+                debugLogger.debug("=== EINZELPLOT COUNTING ===");
+                debugLogger.debug("Plot-Bereich: %s", bounds.toString());
+            }
+
+            CountResult singleResult = countInArea(bounds, entityType, config, debugLogger);
+
+            if (config.isDebugEnabled() && debugLogger != null) {
+                debugLogger.debug("=== EINZELPLOT COUNTING ABGESCHLOSSEN ===");
+                debugLogger.debug("Ergebnis: %d Entities gefunden", singleResult.getTotalCount());
+            }
+
+            return new CountResult(
+                singleResult.getTotalCount(),
+                singleResult.getAllFoundCount(),
+                singleResult.getVisibleCount(),
+                singleResult.getInvisibleCount(),
+                singleResult.getFixedCount(),
+                singleResult.isLimitReached(),
+                1
+            );
+        }
+    }
+
+    /**
+     * Zählt Entities in einem bestimmten Bereich
+     */
+    private static CountResult countInArea(
+            PlotSquaredIntegration.PlotBounds bounds,
+            EntityType entityType,
+            ConfigManager config,
+            DebugLogger debugLogger) {
+
         int totalCount = 0;
-        int allFoundCount = 0; // Alle gefundenen entities (vor Filterung)
+        int allFoundCount = 0;
         int visibleCount = 0;
         int invisibleCount = 0;
         int fixedCount = 0;
         int maxLimit = config.getMaxCountLimit();
         boolean limitReached = false;
 
-        // Debug-Informationen
-        int totalEntitiesChecked = 0;
-        int entitiesInBounds = 0;
+        World world = org.bukkit.Bukkit.getWorld(bounds.getWorldName());
+        if (world == null) {
+            return new CountResult(0, 0, 0, 0, 0, false, 0);
+        }
+
+        // Berechne chunk-Bereiche für den Bereich mit erweiterten Grenzen
+        int minChunkX = (bounds.getMinX() - 1) >> 4;
+        int maxChunkX = (bounds.getMaxX() + 1) >> 4;
+        int minChunkZ = (bounds.getMinZ() - 1) >> 4;
+        int maxChunkZ = (bounds.getMaxZ() + 1) >> 4;
+
+        // Debug: Chunk-Bereiche loggen
+        if (config.isDebugEnabled() && debugLogger != null) {
+            debugLogger.debug("Chunk-Bereich: X=%d bis %d, Z=%d bis %d", minChunkX, maxChunkX, minChunkZ, maxChunkZ);
+        }
+
         int chunksChecked = 0;
+        int totalEntitiesChecked = 0;
 
-        // Verwende eine Set um bereits geprüfte Entities zu verfolgen
-        Set<Entity> alreadyCounted = new HashSet<>();
+        // Iteriere durch alle Chunks die den Bereich überlappen
+        for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
+            for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
+                if (totalCount >= maxLimit) {
+                    limitReached = true;
+                    break;
+                }
 
-        for (com.plotsquared.core.plot.Plot plot : plots) {
-            if (totalCount >= maxLimit) {
-                limitReached = true;
-                break;
-            }
+                // Prüfe ob Chunk geladen ist
+                if (!world.isChunkLoaded(chunkX, chunkZ)) {
+                    continue;
+                }
 
-            PlotSquaredIntegration.PlotBounds bounds = PlotSquaredIntegration.getPlotBounds(plot);
-            World world = org.bukkit.Bukkit.getWorld(bounds.getWorldName());
+                chunksChecked++;
+                org.bukkit.Chunk chunk = world.getChunkAt(chunkX, chunkZ);
 
-            if (world == null) continue;
+                for (Entity entity : chunk.getEntities()) {
+                    totalEntitiesChecked++;
 
-            // Berechne chunk-Bereiche für den Plot mit erweiterten Grenzen
-            int minChunkX = (bounds.getMinX() - 1) >> 4; // Erweitere um 1 Block
-            int maxChunkX = (bounds.getMaxX() + 1) >> 4;
-            int minChunkZ = (bounds.getMinZ() - 1) >> 4;
-            int maxChunkZ = (bounds.getMaxZ() + 1) >> 4;
-
-            // Debug-Info nur bei aktiviertem Debug-Modus
-            if (config.isDebugBoundaries() && debugLogger != null) {
-                debugLogger.debug("Plot %s: Bounds[%d,%d,%d,%d] Chunks[%d,%d-%d,%d]",
-                    plot.getId(), bounds.getMinX(), bounds.getMinZ(), bounds.getMaxX(), bounds.getMaxZ(),
-                    minChunkX, minChunkZ, maxChunkX, maxChunkZ);
-            }
-
-            // Iteriere durch alle Chunks die den Plot überlappen
-            for (int chunkX = minChunkX; chunkX <= maxChunkX; chunkX++) {
-                for (int chunkZ = minChunkZ; chunkZ <= maxChunkZ; chunkZ++) {
                     if (totalCount >= maxLimit) {
                         limitReached = true;
                         break;
                     }
 
-                    // Prüfe ob Chunk geladen ist
-                    if (!world.isChunkLoaded(chunkX, chunkZ)) {
+                    if (entity.getType() != entityType) continue;
+
+                    allFoundCount++;
+
+                    // Prüfe ob Entity in Bounds ist
+                    if (!bounds.contains(entity.getLocation())) {
                         continue;
                     }
 
-                    chunksChecked++;
-                    org.bukkit.Chunk chunk = world.getChunkAt(chunkX, chunkZ);
+                    // Kategorisiere Entity
+                    boolean isEntityInvisible = isInvisible(entity);
+                    boolean isEntityFixed = isFixed(entity);
 
-                    for (Entity entity : chunk.getEntities()) {
-                        totalEntitiesChecked++;
+                    if (isEntityInvisible) {
+                        invisibleCount++;
+                    } else {
+                        visibleCount++;
+                    }
 
-                        if (totalCount >= maxLimit) {
-                            limitReached = true;
-                            break;
-                        }
+                    if (isEntityFixed) {
+                        fixedCount++;
+                    }
 
-                        if (entity.getType() != entityType) continue;
+                    // Prüfe ob Entity gezählt werden soll
+                    if (shouldCountEntity(entity, config)) {
+                        totalCount++;
 
-                        // Verhindere Doppelzählung
-                        if (alreadyCounted.contains(entity)) {
-                            continue;
-                        }
-
-                        // Verbesserte, aber bewährte Grenzprüfung
-                        boolean inBounds = bounds.contains(entity.getLocation());
-
-                        if (inBounds) {
-                            entitiesInBounds++;
-
-                            // Debug für Grenzfälle nur bei aktiviertem Debug-Modus
-                            if (config.isDebugBoundaries() && debugLogger != null) {
-                                org.bukkit.Location loc = entity.getLocation();
-                                if (isNearBorder(loc, bounds)) {
-                                    debugLogger.debug("Entity gefunden: %s bei %.2f,%.2f,%.2f auf Plot %s",
-                                        entityType, loc.getX(), loc.getY(), loc.getZ(), plot.getId());
-                                }
-                            }
-                        }
-
-                        if (!inBounds) continue;
-
-                        // Kategorisiere Entity für Statistiken
-                        boolean isEntityInvisible = isInvisible(entity);
-                        boolean isEntityFixed = isFixed(entity);
-
-                        // Zähle alle gefundenen entities (für Statistiken)
-                        alreadyCounted.add(entity);
-                        allFoundCount++;
-                        if (isEntityInvisible) {
-                            invisibleCount++;
-                        } else {
-                            visibleCount++;
-                        }
-                        if (isEntityFixed) {
-                            fixedCount++;
-                        }
-
-                        // Prüfe ob Entity gezählt werden soll basierend auf Config
-                        if (shouldCountEntity(entity, config)) {
-                            totalCount++;
+                        // Debug: Entity-Position loggen
+                        if (config.isDebugEnabled() && debugLogger != null) {
+                            org.bukkit.Location loc = entity.getLocation();
+                            debugLogger.debug("Entity %s gefunden bei (%.2f, %.2f, %.2f)",
+                                    entity.getType(), loc.getX(), loc.getY(), loc.getZ());
                         }
                     }
                 }
+
                 if (limitReached) break;
+            }
+            if (limitReached) break;
+        }
+
+        // Debug-Ausgabe
+        if (config.isDebugEnabled() && debugLogger != null) {
+            debugLogger.debug("Zählstatistik: %d Chunks geprüft, %d Entities untersucht, %d gefunden, %d gezählt",
+                chunksChecked, totalEntitiesChecked, allFoundCount, totalCount);
+            if (limitReached) {
+                debugLogger.debug("WARNUNG: Zähl-Limit von %d erreicht!", maxLimit);
             }
         }
 
-        // Debug-Ausgabe nur bei aktiviertem Debug-Modus
-        if (config.isDebugBoundaries() && debugLogger != null) {
-            debugLogger.debug("Zählstatistik: %d Chunks geprüft, %d Entities untersucht, %d in Grenzen, %d gezählt",
-                chunksChecked, totalEntitiesChecked, entitiesInBounds, totalCount);
-        }
-
-        return new CountResult(
-            totalCount,        // Gefilterte Anzahl
-            allFoundCount,     // Alle gefundenen
-            visibleCount,
-            invisibleCount,
-            fixedCount,
-            limitReached,
-            plots.size()
-        );
+        return new CountResult(totalCount, allFoundCount, visibleCount, invisibleCount, fixedCount, limitReached, 0);
     }
 
     /**

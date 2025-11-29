@@ -76,18 +76,84 @@ public class PlotSquaredIntegration {
 
     /**
      * Holt alle Plots die gezählt werden sollen (einzeln oder mit merged)
+     * Verwendet die korrekte PlotSquared-Methode um auch Straßen zwischen Plots zu erfassen
      */
     public static Set<Plot> getPlotsToCount(Plot basePlot, boolean includeMerged) {
         Set<Plot> plotsToCount = new HashSet<>();
-        plotsToCount.add(basePlot);
 
         if (includeMerged) {
-            // Füge alle gemergten Plots hinzu
+            // Verwende getConnectedPlots() um alle verbundenen Plots inklusive Straßen zu bekommen
             Set<Plot> connectedPlots = basePlot.getConnectedPlots();
             plotsToCount.addAll(connectedPlots);
+
+            // Stelle sicher, dass der Basis-Plot enthalten ist
+            plotsToCount.add(basePlot);
+        } else {
+            // Nur der einzelne Plot
+            plotsToCount.add(basePlot);
         }
 
         return plotsToCount;
+    }
+
+    /**
+     * Berechnet die gesamte Bounding Box für alle Plots in einem Merge
+     * Dies schließt auch die Straßen zwischen den Plots ein
+     */
+    public static PlotBounds getTotalMergeBounds(Set<Plot> plots) {
+        if (plots.isEmpty()) {
+            return null;
+        }
+
+        String worldName = null;
+        int minX = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+        int minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE;
+
+        for (Plot plot : plots) {
+            PlotBounds plotBounds = getPlotBounds(plot);
+
+            if (worldName == null) {
+                worldName = plotBounds.getWorldName();
+            }
+
+            minX = Math.min(minX, plotBounds.getMinX());
+            minZ = Math.min(minZ, plotBounds.getMinZ());
+            maxX = Math.max(maxX, plotBounds.getMaxX());
+            maxZ = Math.max(maxZ, plotBounds.getMaxZ());
+            minY = Math.min(minY, plotBounds.getMinY());
+            maxY = Math.max(maxY, plotBounds.getMaxY());
+        }
+
+        return new PlotBounds(worldName, minX, minZ, maxX, maxZ, minY, maxY);
+    }
+
+    /**
+     * Loggt Debug-Informationen über alle Plots in einem Merge
+     */
+    public static void debugMergeInfo(Set<Plot> plots, de.leahcimkrob.ethriaPlotCount.util.DebugLogger debugLogger) {
+        if (debugLogger == null) return;
+
+        debugLogger.debug("=== MERGE DEBUG INFO ===");
+        debugLogger.debug("Anzahl Plots im Merge: %d", plots.size());
+
+        int minX = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+
+        for (Plot plot : plots) {
+            PlotBounds bounds = getPlotBounds(plot);
+            debugLogger.debug("  Plot %s: %s", plot.getId().toString(), bounds.toString());
+
+            // Berechne Gesamt-Bounding-Box
+            minX = Math.min(minX, bounds.getMinX());
+            minZ = Math.min(minZ, bounds.getMinZ());
+            maxX = Math.max(maxX, bounds.getMaxX());
+            maxZ = Math.max(maxZ, bounds.getMaxZ());
+        }
+
+        debugLogger.debug("Gesamt-Bereich des Merges: X=%d bis %d (%d Blöcke), Z=%d bis %d (%d Blöcke)",
+                minX, maxX, (maxX - minX + 1), minZ, maxZ, (maxZ - minZ + 1));
+        debugLogger.debug("=== ENDE MERGE DEBUG ===");
     }
 
     /**
@@ -153,6 +219,13 @@ public class PlotSquaredIntegration {
             boolean yInBounds = y >= minY && y <= maxY;
 
             return xInBounds && zInBounds && yInBounds;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("PlotBounds[world=%s, x=%d-%d (%d), z=%d-%d (%d), y=%d-%d]",
+                    worldName, minX, maxX, (maxX - minX + 1),
+                    minZ, maxZ, (maxZ - minZ + 1), minY, maxY);
         }
     }
 }
