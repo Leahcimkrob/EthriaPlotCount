@@ -1,7 +1,7 @@
-package de.leahcimkrob.ethriaPlotCount.util;
+package de.leahcimkrob.ethriaPlotAddon.util;
 
-import de.leahcimkrob.ethriaPlotCount.config.ConfigManager;
-import de.leahcimkrob.ethriaPlotCount.integration.PlotSquaredIntegration;
+import de.leahcimkrob.ethriaPlotAddon.config.ConfigManager;
+import de.leahcimkrob.ethriaPlotAddon.integration.PlotSquaredIntegration;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.InventoryHolder;

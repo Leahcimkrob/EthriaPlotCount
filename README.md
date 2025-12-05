@@ -1,140 +1,104 @@
-# EthriaPlotCount
+# EthriaPlotAddon
 
-[![Download](https://img.shields.io/badge/Download-v1.1-brightgreen.svg)](https://github.com/leahcimkrob/EthriaPlotCount/releases/tag/v1.1)
+[![Download](https://img.shields.io/badge/Download-v1.2-brightgreen.svg)](https://github.com/leahcimkrob/EthriaPlotAddon/releases/tag/v1.2)
 [![Java](https://img.shields.io/badge/Java-21+-orange.svg)](https://openjdk.java.net/projects/jdk/21/)
-[![Paper](https://img.shields.io/badge/Paper-1.21.8+-blue.svg)](https://papermc.io/)
+[![Paper](https://img.shields.io/badge/Paper-1.21+-blue.svg)](https://papermc.io/)
 [![PlotSquared](https://img.shields.io/badge/PlotSquared-7.5.9+-green.svg)](https://github.com/IntellectualSites/PlotSquared)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Ein leistungsstarkes Minecraft-Plugin zum Zählen von Entities auf PlotSquared-Plots mit umfangreichen Berechtigungen, Mehrsprachigkeit und Admin-Tools.
+Ein leistungsstarkes Minecraft-Plugin für PlotSquared-Server mit Entity-Zählung, Plot-Management und Admin-Tools.
 
-*A powerful Minecraft plugin for counting entities on PlotSquared plots with comprehensive permissions, multi-language support, and admin tools.*
+*A powerful Minecraft plugin for PlotSquared servers with entity counting, plot management, and admin tools.*
 
 ---
 
-## 🇩🇪 Deutsch
+## 🚀 Features
 
-### 📋 Funktionen
+### 🔢 Entity Counting
+- Count specific entities on plots: `/plotaddon count sheep`
+- Multi-language support: `/plotcount schaf` (German) or `/plotcount sheep` (English)
+- Admin overview: `/plotaddon count all`
+- Merged plot support with automatic detection
 
-- **🔢 Entity-Zählung**: Zähle spezifische Entity-Typen auf deinem Plot
-- **🏘️ Merge-Plot-Unterstützung**: Berücksichtigt automatisch gemergete Plots
-- **👑 Admin-Tools**: Zähle alle Entity-Typen auf einmal mit `/plotcount all`
-- **🌍 Mehrsprachig**: Deutsche und englische Spracheunterstützung
-- **🔐 Umfangreiche Berechtigungen**: Granulare Kontrolle über Entity-Zugriff
-- **⌨️ Tab-Completion**: Intelligente Vorschläge basierend auf Berechtigungen
-- **🎨 Anpassbares Design**: Konfigurierbares Chat-Prefix und Nachrichten
-- **🐛 Debug-System**: Optionale Debug-Logs für Troubleshooting
+### 📊 Plot Management  
+- **Plot Check**: `/plotaddon check` - Shows plot owner and online status
+- **Extended Info**: `/plotaddon check -v` - Shows trusted players and merge info
+- **Real-time Status**: "Online now" vs "Last seen 2 days ago"
 
-### 🎨 Beispiel-Ausgaben
+### 🔧 Administration
+- **Configuration Reload**: `/plotaddon reload`
+- **Dynamic Help**: `/plotaddon help` - Shows only available commands
+- **Custom Aliases**: Configure in `config.yml`
 
-```
-[EthriaCount] » Zähle Schafe auf diesem Plot...
-[EthriaCount] » Ergebnis: 20 Schafe auf diesem Plot gefunden.
+### 🛡️ Permission System
+- **Granular Control**: Per-entity or per-group permissions
+- **Player/Admin Separation**: Different permission sets
+- **Smart Tab-Completion**: Only shows allowed entities
 
-[EthriaCount] » === Entities auf diesem 4er Merge ===
-[EthriaCount] » Schafe: 20
-[EthriaCount] » Kühe: 8
-[EthriaCount] » Rüstungsständer: 3
-[EthriaCount] » === Gesamt: 31 Entities ===
-```
+---
 
-### 🌟 Features im Detail
+## 📦 Quick Start
 
-#### Deutsche/Englische Entity-Namen
+1. **Download** the latest release
+2. **Place** in your `plugins/` folder  
+3. **Restart** your server
+4. **Configure** permissions (see [Wiki](https://github.com/leahcimkrob/EthriaPlotAddon/wiki))
+5. **Use** `/plotaddon help` in-game
+
+---
+
+## 🎮 Example Usage
+
 ```bash
-/plotcount sheep    # Funktioniert
-/plotcount Schaf    # Funktioniert auch!
-/plotcount cow      # Funktioniert
-/plotcount Kuh      # Funktioniert auch!
+# Count entities
+/plotaddon count sheep          # Count sheep on plot
+/plotcount kuh                  # Count cows (German name)
+/plotaddon count all            # All entities (Admin only)
+
+# Plot information  
+/plotaddon check                # Show plot owner
+/plotaddon check -v             # Extended plot info
+
+# Administration
+/plotaddon reload               # Reload config
+/plotaddon help                 # Show help
 ```
-
-#### Intelligentes Tab-Completion
-- Zeigt nur Entities an, für die du Berechtigung hast
-- Unterstützt deutsche und englische Namen
-- Admin-spezifische Befehle werden nur Admins angezeigt
-
-#### Merge-Plot-Unterstützung
-- Zählt automatisch alle gemergeten Plot-Teile
-- Zeigt deutlich an, wenn es ein Merge ist
-- Konfigurierbar ein-/ausschaltbar
 
 ---
 
-## 🇬🇧 English
+## 🔐 Permissions
 
-### 📋 Features
+### Player
+- `ethriaplotaddon.count.own` - Count on own plots
+- `ethriaplotaddon.count.group.animals` - Count animals  
+- `ethriaplotaddon.plotcheck.use` - Check plot info
 
-- **🔢 Entity Counting**: Count specific entity types on your plot
-- **🏘️ Merged Plot Support**: Automatically includes merged plots
-- **👑 Admin Tools**: Count all entity types at once with `/plotcount all`
-- **🌍 Multi-Language**: German and English language support
-- **🔐 Comprehensive Permissions**: Granular control over entity access
-- **⌨️ Tab-Completion**: Smart suggestions based on permissions
-- **🎨 Customizable Design**: Configurable chat prefix and messages
-- **🐛 Debug System**: Optional debug logging for troubleshooting
+### Admin
+- `ethriaplotaddon.admin` - Full access
+- `ethriaplotaddon.count.reload` - Reload config
 
-### 🎨 Example Output
-
-```
-[EthriaCount] » Counting sheep on this plot...
-[EthriaCount] » Result: 20 sheep found on this plot.
-
-[EthriaCount] » === Entities on this 4-plot merge ===
-[EthriaCount] » Sheep: 20
-[EthriaCount] » Cows: 8
-[EthriaCount] » Armor Stands: 3
-[EthriaCount] » === Total: 31 Entities ===
-```
-
-
-
-### 🌟 Advanced Features
-
-#### Bilingual Entity Names
-```bash
-/plotcount sheep    # Works
-/plotcount Schaf    # Also works!
-/plotcount cow      # Works
-/plotcount Kuh      # Also works!
-```
-
-#### Smart Tab-Completion
-- Shows only entities you have permission for
-- Supports German and English names
-- Admin-specific commands only shown to admins
-
-#### Merged Plot Support
-- Automatically counts all merged plot parts
-- Clearly indicates when it's a merge
-- Configurable on/off
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+**Full permission list**: [Wiki Permissions](https://github.com/leahcimkrob/EthriaPlotAddon/wiki/Permissions)
 
 ---
 
-## 📝 License
+## 📚 Documentation
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **[🏠 Wiki Home](https://github.com/leahcimkrob/EthriaPlotAddon/wiki)** - Complete documentation
+- **[📋 Commands](https://github.com/leahcimkrob/EthriaPlotAddon/wiki/Commands)** - All available commands  
+- **[🔐 Permissions](https://github.com/leahcimkrob/EthriaPlotAddon/wiki/Permissions)** - Permission system
 
 ---
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/Leahcimkrob/EthriaPlotCount/issues)
-- **Documentation**: [Wiki](https://github.com/Leahcimkrob/EthriaPlotCount/wiki)
+- **Issues**: [GitHub Issues](https://github.com/Leahcimkrob/EthriaPlotAddon/issues)
+- **Wiki**: [Documentation](https://github.com/Leahcimkrob/EthriaPlotAddon/wiki)
 
 ---
 
-## ⭐ Credits
+## 📝 License
 
-- **PlotSquared**: [IntellectualSites](https://github.com/IntellectualSites/PlotSquared)
-- **Paper**: [PaperMC](https://papermc.io/)
+MIT License - see [LICENSE](LICENSE) file
 
 ---
 

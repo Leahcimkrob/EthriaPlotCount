@@ -1,48 +1,53 @@
 name: EthriaPlotAddon
-version: ${project.version}
+version: 1.1
 main: de.leahcimkrob.ethriaPlotAddon.EthriaPlotAddon
 api-version: '1.21'
 description: Plugin zum Zählen von Entities auf Plots
 author: leahcimkrob
-website: https://github.com/leahcimkrob/EthriaPlotCount
+website: https://github.com/leahcimkrob/EthriaPlotAddon
 
 commands:
-  plotaddon:
-    description: Hauptbefehl für das EthriaPlotAddon
-    usage: /plotaddon <subcommand>
+  plotcount:
+    description: Zählt Entities auf einem Plot
+    usage: /plotcount <entitytype|all|help|reload>
+    permission: ethriaplotaddon.count.use
 
 depend:
   - PlotSquared
 
 permissions:
   # === ADMIN BERECHTIGUNGEN ===
-  ethriaplotaddon.admin:
+  ethriaplotaddon.count.admin:
     description: Vollzugriff - darf alles auf jedem Plot zählen
     default: op
     children:
+      ethriaplotaddon.count.use: true
       ethriaplotaddon.count.group.*: true
       ethriaplotaddon.count.entity.*: true
       ethriaplotaddon.count.own: true
       ethriaplotaddon.count.other: true
       ethriaplotaddon.count.reload: true
-      ethriaplotaddon.plotcheck.use: true
+
+  # === BASIS BERECHTIGUNGEN ===
+  ethriaplotaddon.count.use:
+    description: Basis-Berechtigung um das Plugin zu verwenden
+    default: false
+
+  ethriaplotaddon.count.reload:
+    description: Darf die Plugin-Konfiguration neu laden
+    default: op
 
   # === PLOT-ZUGRIFF ===
   ethriaplotaddon.count.own:
-    description: Darf auf eigenen, getrusted oder added Plots zählen
+    description: Darf auf eigenen, getrusted oder added Plots zählen (nur wenn Owner online)
     default: false
 
   ethriaplotaddon.count.other:
     description: Darf auch auf fremden Plots zählen
     default: op
 
-  # === ADMIN-BEFEHLE ===
-  ethriaplotaddon.count.reload:
-    description: Darf die Plugin-Konfiguration neu laden
-    default: op
-
   # === GRUPPEN-BERECHTIGUNGEN ===
-  ethriaplotaddon.count.group.*:
+  ethriaplotaddon-count.group.*:
     description: Darf alle Entity-Gruppen zählen
     default: op
     children:
@@ -93,9 +98,4 @@ permissions:
 
   ethriaplotaddon.count.entity.armor_stand:
     description: Darf Rüstungsständer zählen
-    default: false
-
-  # === PLOT-CHECK BERECHTIGUNG ===
-  ethriaplotaddon.plotcheck.use:
-    description: Darf Plot-Informationen einsehen und Owner-Status prüfen
     default: false

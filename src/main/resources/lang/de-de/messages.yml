@@ -59,3 +59,7 @@ messages:
   help_footer: "&7Verfügbare Entity-Typen: &e{types}"
   help_tab_completion: "&7Tipp: Nutze Tab-Completion für Entity-Namen!"
 
+  # Plot-Check Nachrichten
+  plotcheck_owner_online: "&6Plot-Info: &7Plot &e{plotId} &7gehört &a{owner} &7(&aaktuell online&7)"
+  plotcheck_owner_offline: "&6Plot-Info: &7Plot &e{plotId} &7gehört &c{owner} &7(&czuletzt online: {lastSeen}&7)"
+  plotcheck_owner_never: "&6Plot-Info: &7Plot &e{plotId} &7gehört &c{owner} &7(&cwar noch nie online&7)"

@@ -1,4 +1,4 @@
-package de.leahcimkrob.ethriaPlotCount.util;
+package de.leahcimkrob.ethriaPlotAddon.util;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;

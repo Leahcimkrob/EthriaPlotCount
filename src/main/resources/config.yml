@@ -1,13 +1,16 @@
-# EthriaPlotCount Configuration
+# EthriaPlotAddon Configuration
 # Plugin zum Zählen von Entities auf Plots
 
 # Sprache für Nachrichten (de-de, en-us)
 language: "de-de"
 
-# Command-Aliases (zusätzlich zu /plotcount)
+# Command-Aliases (Alias -> Subcommand)
+# Format: alias: "subcommand"
 command_aliases:
-  - "count"
-  - "entitycount"
+  plotcount: "count"
+  count: "count"
+  entitycount: "count"
+  plotcheck: "check"
 
 # Erweiterte Einstellungen
 settings:

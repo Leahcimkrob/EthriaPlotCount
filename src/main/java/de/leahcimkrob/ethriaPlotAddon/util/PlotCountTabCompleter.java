@@ -1,12 +1,12 @@
-package de.leahcimkrob.ethriaPlotCount.util;
+package de.leahcimkrob.ethriaPlotAddon.util;
 
-import de.leahcimkrob.ethriaPlotCount.lang.MessageManager;
+import de.leahcimkrob.ethriaPlotAddon.config.ConfigManager;
+import de.leahcimkrob.ethriaPlotAddon.lang.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,9 +14,17 @@ import java.util.stream.Collectors;
 public class PlotCountTabCompleter implements TabCompleter {
 
     private final MessageManager messageManager;
+    private final ConfigManager configManager;
 
+    public PlotCountTabCompleter(MessageManager messageManager, ConfigManager configManager) {
+        this.messageManager = messageManager;
+        this.configManager = configManager;
+    }
+
+    // Backwards compatibility constructor
     public PlotCountTabCompleter(MessageManager messageManager) {
         this.messageManager = messageManager;
+        this.configManager = null;
     }
 
     @Override
@@ -27,15 +35,51 @@ public class PlotCountTabCompleter implements TabCompleter {
 
         Player player = (Player) sender;
 
-        // Prüfe Basis-Berechtigung
-        if (!PermissionManager.hasBasePermission(player)) {
+        // Prüfe ob Spieler mindestens eine Berechtigung hat
+        if (!hasAnyPermission(player)) {
             return new ArrayList<>();
         }
 
-        if (args.length == 1) {
-            return getEntityCompletions(player, args[0]);
-        } else if (args.length == 2 && args[0].equalsIgnoreCase("help")) {
-            return new ArrayList<>(); // Keine weiteren Argumente nach help
+        String commandName = command.getName().toLowerCase();
+
+        // Handle /plotcount <entity> (built-in alias usage)
+        if (commandName.equals("plotcount")) {
+            if (args.length == 1) {
+                return getEntityCompletions(player, args[0]);
+            }
+            return new ArrayList<>();
+        }
+
+        // Handle dynamic aliases from config
+        if (configManager != null && configManager.hasAlias(commandName)) {
+            String targetSubcommand = configManager.getAliasTarget(commandName);
+            if ("count".equals(targetSubcommand)) {
+                if (args.length == 1) {
+                    return getEntityCompletions(player, args[0]);
+                }
+            }
+            return new ArrayList<>();
+        }
+
+        // Handle /plotaddon <subcommand>
+        if (commandName.equals("plotaddon")) {
+            if (args.length == 1) {
+                // First argument: subcommands
+                List<String> subcommands = new ArrayList<>();
+                if ("count".startsWith(args[0].toLowerCase())) {
+                    subcommands.add("count");
+                }
+                if ("help".startsWith(args[0].toLowerCase())) {
+                    subcommands.add("help");
+                }
+                if (PermissionManager.canReload(player) && "reload".startsWith(args[0].toLowerCase())) {
+                    subcommands.add("reload");
+                }
+                return subcommands;
+            } else if (args.length == 2 && args[0].equalsIgnoreCase("count")) {
+                // Second argument for count subcommand: entities
+                return getEntityCompletions(player, args[1]);
+            }
         }
 
         return new ArrayList<>();
@@ -148,5 +192,33 @@ public class PlotCountTabCompleter implements TabCompleter {
         } catch (Exception e) {
             // Stille Fehlerbehandlung für Tab-Completion
         }
+    }
+
+    /**
+     * Prüft ob Spieler mindestens eine Plugin-Berechtigung hat
+     */
+    private boolean hasAnyPermission(Player player) {
+        // Admin hat immer Zugriff
+        if (PermissionManager.hasAdminPermission(player)) {
+            return true;
+        }
+
+        // Count-Berechtigungen
+        if (PermissionManager.canCountOnOwnPlots(player) ||
+            PermissionManager.canCountOnOtherPlots(player)) {
+            return true;
+        }
+
+        // Plot-Check Berechtigung
+        if (PermissionManager.canCheckPlots(player)) {
+            return true;
+        }
+
+        // Reload-Berechtigung
+        if (PermissionManager.canReload(player)) {
+            return true;
+        }
+
+        return false;
     }
 }
